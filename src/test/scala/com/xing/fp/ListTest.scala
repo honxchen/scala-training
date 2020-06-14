@@ -5,7 +5,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class ListTest extends AnyWordSpec with Matchers{
-
     "List" should {
       "sum" in {
         List.sum(List(1, 2, 3, 4, 5)) shouldEqual 15
@@ -13,6 +12,10 @@ class ListTest extends AnyWordSpec with Matchers{
 
       "product" in {
         List.product(List(1.0,2.0,3.0,4.0,5.0))  shouldEqual 120
+      }
+
+      "length" in {
+        List.length(List(1, 2, 3, 4 ,5)) shouldEqual 5
       }
 
       "set head" in {

@@ -15,6 +15,8 @@ object List {
     case Cons(x, xs) => f(x, foldRight(xs, init)(f))
   }
 
+  def length[A](l : List[A]): Int = foldRight(l, 0)((_, t) => 1 + t)
+
   def tail[A](ints: List[A]): List[A] = ints match {
     case Nil => Nil
     case Cons(_, t) => t
