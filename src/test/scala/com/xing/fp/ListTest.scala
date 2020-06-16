@@ -10,6 +10,14 @@ class ListTest extends AnyWordSpec with Matchers{
         List.sum(List(1, 2, 3, 4, 5)) shouldEqual 15
       }
 
+      "map " in {
+        List.map(List(1, 2, 3))(_ + 1) shouldEqual List(2, 3 ,4)
+      }
+
+      "flatmap " in {
+        List.flatMap(List(1, 2, 3))(i => List(i, i)) shouldEqual List(1, 1, 2, 2, 3 ,3)
+      }
+
       "product" in {
         List.product(List(1.0,2.0,3.0,4.0,5.0))  shouldEqual 120
       }

@@ -24,6 +24,10 @@ object List {
 
   def append[A](a1: List[A], a2: List[A]): List[A] = foldRight(a1, a2)((a, a2) => Cons(a, a2))
 
+  def map[A, B](a1: List[A])(f: A => B) : List[B] = foldLeft(a1, Nil: List[B])((l, r) => List.append(l, List(f(r))))
+
+  def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] = foldLeft(as, Nil: List[B])((l, r) => List.append(l, f(r)))
+
   def length[A](l : List[A]): Int = foldLeft(l, 0)((t, _) => 1 + t)
 
   def tail[A](ints: List[A]): List[A] = ints match {
