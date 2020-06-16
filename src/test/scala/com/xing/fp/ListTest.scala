@@ -18,6 +18,14 @@ class ListTest extends AnyWordSpec with Matchers{
         List.length(List(1, 2, 3, 4 ,5)) shouldEqual 5
       }
 
+      "reverse" in {
+        List.reverse(List(1, 2, 3, 4)) shouldEqual List(4, 3, 2, 1)
+      }
+
+      "append" in {
+        List.append(List(1, 2, 3), List(4, 5, 6)) shouldEqual List(1, 2, 3, 4, 5, 6)
+      }
+
       "set head" in {
         List.setHead(List(1, 2, 3, 4, 5), 2) shouldEqual List(2,2,3,4,5)
       }

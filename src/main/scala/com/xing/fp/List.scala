@@ -20,6 +20,10 @@ object List {
     case Cons(x, xs) => foldLeft(xs, f(init, x))(f)
   }
 
+  def reverse[A](l : List[A]): List[A] = foldRight(l, Nil: List[A])((t: A, h: List[A]) => List.append(h, List(t)))
+
+  def append[A](a1: List[A], a2: List[A]): List[A] = foldRight(a1, a2)((a, a2) => Cons(a, a2))
+
   def length[A](l : List[A]): Int = foldLeft(l, 0)((t, _) => 1 + t)
 
   def tail[A](ints: List[A]): List[A] = ints match {
