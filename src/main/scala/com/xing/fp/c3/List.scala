@@ -1,4 +1,4 @@
-package com.xing.fp
+package com.xing.fp.c3
 
 sealed trait List[+A]
 case object Nil extends List[Nothing]
