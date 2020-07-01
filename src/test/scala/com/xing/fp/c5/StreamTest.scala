@@ -19,5 +19,9 @@ class StreamTest extends AnyWordSpec with Matchers {
     "take" in {
       s.take(2).toList shouldEqual List(1, 2)
     }
+
+    "drop" in {
+      s.drop(2).toList shouldEqual List(3, 4, 5)
+    }
   }
 }
