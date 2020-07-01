@@ -23,5 +23,9 @@ class StreamTest extends AnyWordSpec with Matchers {
     "drop" in {
       s.drop(2).toList shouldEqual List(3, 4, 5)
     }
+
+    "takewhile" in {
+      s.takeWhile(_ % 2 == 0).toList shouldEqual List(2, 4)
+    }
   }
 }
