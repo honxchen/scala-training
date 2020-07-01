@@ -12,6 +12,18 @@ sealed trait Stream[+A] {
     case Empty => None
     case Cons(h, _) => Some(h())
   }
+
+  def take(n: Int): Stream[A] = n match {
+    case 0 => Stream.empty
+    case 1 => this  match {
+      case Empty => Stream.empty
+      case Cons(h, t) => Stream(h())
+    }
+    case _ => this  match {
+      case Empty => Stream.empty
+      case Cons(h, t) => Cons(h, () => t().take(n - 1))
+    }
+  }
 }
 
 case object Empty extends Stream[Nothing]
