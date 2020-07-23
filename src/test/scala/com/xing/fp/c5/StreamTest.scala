@@ -27,5 +27,17 @@ class StreamTest extends AnyWordSpec with Matchers {
     "takewhile" in {
       s.takeWhile(_ % 2 == 0).toList shouldEqual List(2, 4)
     }
+
+    "take and then toList" in {
+      Stream(1,2,3).take(2).toList shouldEqual List(1,2)
+    }
+
+    "exists" in {
+      s.exists( _ == 2) shouldEqual true
+    }
+
+    "foldright" in {
+      s.foldRight("6")(_+_) shouldEqual "123456"
+    }
   }
 }
