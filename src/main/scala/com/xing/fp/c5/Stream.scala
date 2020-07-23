@@ -13,28 +13,16 @@ sealed trait Stream[+A] {
     case Cons(h, _) => Some(h())
   }
 
-  def take(n: Int): Stream[A] = n match {
-    case 0 => Stream.empty
-    case 1 => this  match {
+  def take(n: Int): Stream[A] = this match {
       case Empty => Stream.empty
-      case Cons(h, t) => Stream(h())
-    }
-    case _ => this  match {
-      case Empty => Stream.empty
-      case Cons(h, t) => Cons(h, () => t().take(n - 1))
-    }
+      case Cons(h, t) if n > 1 => Cons(h, () => t().take(n - 1))
+      case Cons(h, _) if n == 1 => Stream(h())
   }
 
-  def drop(n: Int): Stream[A] = n match {
-    case 0 => this
-    case 1 => this match {
-      case Empty => Stream.empty
-      case Cons(h, t) => t()
-    }
-    case _ => this match {
-      case Empty => Stream.empty
-      case Cons(h, t) => t().drop(n - 1)
-    }
+  def drop(n: Int): Stream[A] = this match {
+    case Empty => Stream.empty
+    case Cons(_, t) if n > 1 => t().drop(n - 1)
+    case Cons(_, t) if n == 1 => t()
   }
 
   def takeWhile(p: A => Boolean): Stream[A] = this match {
