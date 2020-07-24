@@ -32,14 +32,16 @@ sealed trait Stream[+A] {
     }
   }
 
-  def exists(p: A => Boolean): Boolean = {
+  def exists(p: A => Boolean): Boolean =
     this.foldRight(false)((l,r) => p(l) || r)
-  }
+
 
   def foldRight[B](z: => B)(f: (A, => B) => B ): B = this match {
     case Cons(h, t) => f(h(), t().foldRight(z)(f))
     case _ => z
   }
+
+  def forAll(p: A => Boolean): Boolean =  this.foldRight(true)((l,r) => p(l) && r)
 }
 
 case object Empty extends Stream[Nothing]

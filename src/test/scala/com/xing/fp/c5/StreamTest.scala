@@ -39,5 +39,10 @@ class StreamTest extends AnyWordSpec with Matchers {
     "foldright" in {
       s.foldRight("6")(_+_) shouldEqual "123456"
     }
+
+    "forall" in {
+      s.forAll( _ == 2) shouldEqual false
+      s.forAll( _ >= 1) shouldEqual true
+    }
   }
 }
