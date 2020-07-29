@@ -42,6 +42,8 @@ sealed trait Stream[+A] {
   }
 
   def forAll(p: A => Boolean): Boolean =  this.foldRight(true)((l,r) => p(l) && r)
+
+  def map[B](p: A => B): Stream[B] = this.foldRight(Empty: Stream[B])((l, r) => Cons(() => p(l), () => r))
 }
 
 case object Empty extends Stream[Nothing]

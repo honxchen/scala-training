@@ -44,5 +44,9 @@ class StreamTest extends AnyWordSpec with Matchers {
       s.forAll( _ == 2) shouldEqual false
       s.forAll( _ >= 1) shouldEqual true
     }
+
+    "map" in {
+      s.map(_+1).toList shouldEqual List(2,3,4,5,6)
+    }
   }
 }
