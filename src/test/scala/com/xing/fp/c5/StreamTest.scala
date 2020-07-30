@@ -48,5 +48,9 @@ class StreamTest extends AnyWordSpec with Matchers {
     "map" in {
       s.map(_+1).toList shouldEqual List(2,3,4,5,6)
     }
+
+    "filter" in {
+      s.filter(_!=2).toList shouldEqual List(1,3,4,5)
+    }
   }
 }
