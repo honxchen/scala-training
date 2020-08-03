@@ -1,5 +1,7 @@
 package com.xing.fp.c5
 
+import com.xing.fp.c5.Stream.{cons, empty}
+
 import scala.collection.immutable
 
 sealed trait Stream[+A] {
@@ -14,19 +16,19 @@ sealed trait Stream[+A] {
   }
 
   def take(n: Int): Stream[A] = this match {
-      case Empty => Stream.empty
+      case Empty => empty
       case Cons(h, t) if n > 1 => Cons(h, () => t().take(n - 1))
       case Cons(h, _) if n == 1 => Stream(h())
   }
 
   def drop(n: Int): Stream[A] = this match {
-    case Empty => Stream.empty
+    case Empty => empty
     case Cons(_, t) if n > 1 => t().drop(n - 1)
     case Cons(_, t) if n == 1 => t()
   }
 
   def takeWhile(p: A => Boolean): Stream[A] = this match {
-    case Empty => Stream.empty
+    case Empty => empty
     case Cons(h, t) =>  {
       if (p(h())) Cons(h, () => t().takeWhile(p)) else t().takeWhile(p)
     }
@@ -43,9 +45,13 @@ sealed trait Stream[+A] {
 
   def forAll(p: A => Boolean): Boolean =  this.foldRight(true)((l,r) => p(l) && r)
 
-  def map[B](p: A => B): Stream[B] = this.foldRight(Empty: Stream[B])((l, r) => Cons(() => p(l), () => r))
+  def map[B](p: A => B): Stream[B] = this.foldRight(empty[B])((h, t) => cons(p(h), t))
 
   def filter(p: A => Boolean): Stream[A] = this.foldRight(Empty: Stream[A])((l, r) => if(p(l)) Cons(() => l, () => r) else r)
+
+  def append[B >: A](s: Stream[B]): Stream[B] = this.foldRight(s)((l, r) => cons(l, r))
+
+  def flatmap[B >: A](p: A => Stream[B]): Stream[B] = this.foldRight(Empty: Stream[B])((l, r) => p(l).append(r))
 }
 
 case object Empty extends Stream[Nothing]
