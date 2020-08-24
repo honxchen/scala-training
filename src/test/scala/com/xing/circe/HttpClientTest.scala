@@ -7,13 +7,15 @@ class HttpClientTest extends AnyWordSpec with Matchers {
 
   "Http client" should {
     "get string pets" in {
-      println(HttpClient.getStringPets().unsafeRunSync())
+//      println(HttpClient.getStringPets().unsafeRunSync())
     }
 
     "get pets" in {
-      val pets = HttpClient.getPets().unsafeRunSync()
-      println(pets)
-      pets.size shouldEqual 3
+//      val pets = HttpClient.getPets().unsafeRunSync()
+//      println(pets)
+//      pets.size shouldEqual 3
+      // use auto
+      // use semi auto
     }
   }
 }
