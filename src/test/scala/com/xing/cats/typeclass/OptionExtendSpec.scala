@@ -77,39 +77,52 @@ class OptionExtendSpec extends AnyWordSpec with Matchers {
 
       // what if one of them is none
     }
+  }
 
-    "convert int to string" in {
-      def stingCount(number: Int): Option[String] = number match {
+  "optionT" should {
+    val number: IO[Option[Int]] = IO(Some(15))
+    val numberT: OptionT[IO, Int] = OptionT(number)
+
+    "map int to string" in {
+      def stingCount(number: Int): String = number match {
+        case 0 => "have no item"
+        case 1 => "have 1 item"
+        case n => s"have $n items"
+      }
+
+      numberT.map(stingCount).value.unsafeRunSync().get shouldEqual "have 15 items"
+    }
+
+    "convert with option" in {
+
+      def stingCountOption(number: Int): Option[String] = number match {
         case 0 => None
         case 1 => Some("have 1 item")
         case n => Some(s"have $n items")
       }
-      val number: IO[Option[Int]] = IO(Some(15))
-      val numberT: OptionT[IO, Int] = OptionT(number)
 
-      numberT.mapFilter(stingCount(_)).value.unsafeRunSync().get shouldEqual "have 15 items"
+      numberT.subflatMap(stingCountOption).value.unsafeRunSync().get shouldEqual "have 15 items"
+    }
 
+    "convert with IO option" in {
       def stingCountF(number: Int): IO[Option[String]] = number match {
         case 0 => IO(None)
         case 1 => IO(Some("have 1 item"))
         case n => IO(Some(s"have $n items"))
       }
-      numberT.flatMapF(stingCountF(_)).value.unsafeRunSync().get shouldEqual "have 15 items"
 
+      numberT.flatMapF(stingCountF(_)).value.unsafeRunSync().get shouldEqual "have 15 items"
+    }
+
+    "convert with OptionT" in {
       def stingCountT(number: Int): OptionT[IO, String] = number match {
         case 0 => OptionT.fromOption(None)
         case 1 => OptionT[IO, String](IO(Some("have 1 item")))
         case n => OptionT[IO, String](IO(Some(s"have $n items")))
       }
+
       numberT.flatMap(stingCountT).value.unsafeRunSync().get shouldEqual "have 15 items"
     }
-
-    "get default value if option is null" in {
-      val customGreeting: IO[Option[String]] = IO(None)
-      val defaultGreeting: IO[String] = IO("hello, there")
-
-      OptionT(customGreeting).getOrElse("hello, there").unsafeRunSync() shouldEqual "hello, there"
-      OptionT(customGreeting).getOrElseF(defaultGreeting).unsafeRunSync() shouldEqual "hello, there"
-    }
   }
+
 }
