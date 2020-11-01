@@ -101,7 +101,6 @@ class OptionExtendSpec extends AnyWordSpec with Matchers {
         case n => Some(s"have $n items")
       }
 
-      numberT.subflatMap(stingCountOption).value.unsafeRunSync().get shouldEqual "have 15 items"
     }
 
     "convert with IO option" in {
@@ -111,7 +110,6 @@ class OptionExtendSpec extends AnyWordSpec with Matchers {
         case n => IO(Some(s"have $n items"))
       }
 
-      numberT.flatMapF(stingCountF(_)).value.unsafeRunSync().get shouldEqual "have 15 items"
     }
 
     "convert with OptionT" in {
@@ -121,7 +119,6 @@ class OptionExtendSpec extends AnyWordSpec with Matchers {
         case n => OptionT[IO, String](IO(Some(s"have $n items")))
       }
 
-      numberT.flatMap(stingCountT).value.unsafeRunSync().get shouldEqual "have 15 items"
     }
   }
 
