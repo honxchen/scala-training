@@ -29,16 +29,16 @@ class OptionExtendSpec extends AnyWordSpec with Matchers {
     "get value from IO[Option]" in {
       val customGreeting: IO[Option[String]] = IO(Some("welcome back, Lola"))
 
-      val excitedGreeting: IO[Option[String]] = customGreeting.map(_.map(_ + "!"))
+      val excitedGreeting: IO[Option[String]] = ???
       excitedGreeting.unsafeRunSync().get shouldEqual "welcome back, Lola!"
 
-      val hasWelcome: IO[Option[String]] = customGreeting.map(_.filter(_.contains("welcome")))
+      val hasWelcome: IO[Option[String]] = ???
       hasWelcome.unsafeRunSync().get shouldEqual "welcome back, Lola"
 
-      val noWelcome: IO[Option[String]] = customGreeting.map(_.filterNot(_.contains("welcome")))
+      val noWelcome: IO[Option[String]] = ???
       noWelcome.unsafeRunSync() shouldEqual None
 
-      val withFallback: IO[String] = customGreeting.map(_.getOrElse("hello, there!"))
+      val withFallback: IO[String] = ???
       withFallback.unsafeRunSync() shouldEqual "welcome back, Lola"
 
     }
@@ -47,16 +47,16 @@ class OptionExtendSpec extends AnyWordSpec with Matchers {
       val customGreeting: IO[Option[String]] = IO(Some("welcome back, Lola"))
       val customGreetingT: OptionT[IO, String] = OptionT(customGreeting)
 
-      val excitedGreeting: OptionT[IO, String] = customGreetingT.map(_ + "!")
+      val excitedGreeting: OptionT[IO, String] = ???
       excitedGreeting.value.unsafeRunSync().get shouldEqual "welcome back, Lola!"
 
-      val hasWelcome: OptionT[IO, String] = customGreetingT.filter(_.contains("welcome"))
+      val hasWelcome: OptionT[IO, String] = ???
       hasWelcome.value.unsafeRunSync().get shouldEqual "welcome back, Lola"
 
-      val noWelcome: OptionT[IO, String] = customGreetingT.filterNot(_.contains("welcome"))
+      val noWelcome: OptionT[IO, String] = ???
       noWelcome.value.unsafeRunSync() shouldEqual None
 
-      val withFallback: IO[String] = customGreetingT.getOrElse("hello, there!")
+      val withFallback: IO[String] = ???
       withFallback.unsafeRunSync() shouldEqual "welcome back, Lola"
 
     }
@@ -70,11 +70,7 @@ class OptionExtendSpec extends AnyWordSpec with Matchers {
 
       val lastnameO: Option[String] = Some("Doe")
 
-      val ot: OptionT[IO, String] = for {
-        g <- OptionT(greetingFO)
-        f <- OptionT.liftF(firstnameF)
-        l <- OptionT.fromOption[IO](lastnameO)
-      } yield s"$g $f $l"
+      val ot: OptionT[IO, String] = ???
 
       val result: IO[Option[String]] = ot.value
       result.unsafeRunSync() shouldEqual Some("Hello Jane Doe")
