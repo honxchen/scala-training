@@ -78,6 +78,32 @@ class OptionExtendSpec extends AnyWordSpec with Matchers {
       // what if one of them is none
     }
 
+    "convert int to string" in {
+      def stingCount(number: Int): Option[String] = number match {
+        case 0 => None
+        case 1 => Some("have 1 item")
+        case n => Some(s"have $n items")
+      }
+      val number: IO[Option[Int]] = IO(Some(15))
+      val numberT: OptionT[IO, Int] = OptionT(number)
+
+      numberT.mapFilter(stingCount(_)).value.unsafeRunSync().get shouldEqual "have 15 items"
+
+      def stingCountF(number: Int): IO[Option[String]] = number match {
+        case 0 => IO(None)
+        case 1 => IO(Some("have 1 item"))
+        case n => IO(Some(s"have $n items"))
+      }
+      numberT.flatMapF(stingCountF(_)).value.unsafeRunSync().get shouldEqual "have 15 items"
+
+      def stingCountT(number: Int): OptionT[IO, String] = number match {
+        case 0 => OptionT.fromOption(None)
+        case 1 => OptionT[IO, String](IO(Some("have 1 item")))
+        case n => OptionT[IO, String](IO(Some(s"have $n items")))
+      }
+      numberT.flatMap(stingCountT).value.unsafeRunSync().get shouldEqual "have 15 items"
+    }
+
     "get default value if option is null" in {
       val customGreeting: IO[Option[String]] = IO(None)
       val defaultGreeting: IO[String] = IO("hello, there")
