@@ -39,11 +39,7 @@ class EitherExtendSpec extends AnyWordSpec with Matchers {
 
     "get value with Either T" in {
       def divisionProgramAsync(inputA: String, inputB: String): EitherT[IO, String, Double] =
-        for {
-          a <- EitherT(parseDoubleAsync(inputA))
-          b <- EitherT(parseDoubleAsync(inputB))
-          result <- EitherT(divideAsync(a, b))
-        } yield result
+        ???
 
       divisionProgramAsync("10", "4").value.unsafeRunSync() shouldEqual Right(2.5)
       divisionProgramAsync("a", "b").value.unsafeRunSync() shouldEqual Left("a is not a number")
