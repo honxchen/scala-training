@@ -15,8 +15,39 @@ object RNG {
     }
   }
 
+  //6.2
+  def double(rng: RNG): (Double, RNG) = {
+    val(i, nextRng) = rng.nextInt
+    (1.0 / i, nextRng)
+  }
+
   def nonNegativeInt(rng: RNG): (Int, RNG) = {
     val (i, nextRng) = rng.nextInt
     (if (i < 0) -(i + 1) else i, nextRng)
   }
+
+  type Rand[+A] = RNG => (A, RNG)
+  val int: Rand[Int] = _.nextInt
+  def unit[A](a: A): Rand[A] = rng => (a, rng)
+  def map[A, B](s: Rand[A])(f: A => B): Rand[B] = {
+    rng => {
+      val (a, rng2) = s(rng)
+      (f(a), rng2)
+    }
+  }
+
+  //6.5
+  def double2(rng: RNG): (Double, RNG) = {
+    map(int)(1.0 / _)(rng)
+  }
+
+  def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = {
+    rng => {
+      val (a, r1) = ra(rng)
+      val (b, r2) = rb(r1)
+      (f(a, b), r2)
+    }
+  }
+
+  def both[A, B](ra: Rand[A], rb: Rand[B]): Rand[(A, B)] = map2(ra, rb)((_, _))
 }

@@ -21,5 +21,11 @@ class SimpleRNGTest extends AnyWordSpec with Matchers{
       n1 shouldEqual 384748
       rng2 shouldEqual SimpleRNG(25214903928L)
     }
+
+    "double" in {
+      val rng = SimpleRNG(1)
+      double(rng)._1 shouldEqual 1.0 / 384748
+      double2(rng)._1 shouldEqual 1.0 / 384748
+    }
    }
 }
